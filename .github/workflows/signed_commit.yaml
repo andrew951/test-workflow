@@ -18,22 +18,33 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-      
+
       - name: Configure Git
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Make changes (example)
+      - name: Create or checkout target branch
         run: |
-          echo "New commit $(date)" >> file.txt
-          git add file.txt
-          git commit -m "Automated commit from GitHub Actions"
+          git checkout -B target-branch
 
-      - name: Push changes to another branch
+      - name: Make changes
         run: |
-          git branch new-branch
-          git checkout new-branch
-          git push origin new-branch
+          # Add your script or command here to make changes
+          echo "New changes" >> changes.txt
+
+      - name: Add changes
+        run: |
+          git add .
+
+      - name: Commit changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git commit -S -m "Signed commit from GitHub Actions"
+
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin target-branch
