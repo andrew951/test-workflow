@@ -1,0 +1,32 @@
+name: Signed Commit with GitHub Token
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main  # Change this if needed
+
+permissions:
+  contents: write  # Required for committing changes
+
+jobs:
+  commit_changes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make changes (example)
+        run: |
+          echo "New commit $(date)" >> file.txt
+          git add file.txt
+          git commit -m "Automated commit from GitHub Actions"
+
+      - name: Push changes to another branch
+        run: |
+          git branch new-branch
+          git checkout new-branch
+          git push origin new-branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
