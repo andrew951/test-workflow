@@ -22,12 +22,13 @@ jobs:
       - name: Make changes
         run: |
           # Add your script or command here to make changes
-          echo "New changes" >> changes2.txt
+          echo "New changes" >> changes${{ github.event.pull_request.head.sha }}.txt
           
       - uses: planetscale/ghcommit-action@v0.2.4
         with:
           commit_message: "🤖 fmt"
           repo: ${{ github.repository }}
           branch: ${{ github.head_ref || github.ref_name }}
+          empty: true
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
