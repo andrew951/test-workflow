@@ -16,35 +16,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Create or checkout target branch
-        run: |
-          git checkout -B target-branch
 
       - name: Make changes
         run: |
           # Add your script or command here to make changes
           echo "New changes" >> changes.txt
-
-      - name: Add changes
-        run: |
-          git add .
-
-      - name: Commit changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git commit -S -m "Signed commit from GitHub Actions"
-
-      - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git push origin target-branch
+          
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Apply changes signed
